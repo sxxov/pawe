@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { loadProgress } from '../../core/load/progress/loadProgress';
 import { nameof } from '../../utils/type/nameof';
 import { monitorFetch } from './monitorFetch';
+import { loadSignals } from '../../core/load/signal/loadSignals';
 
 describe(nameof({ monitorFetch }), (it) => {
 	let unsubscribe: () => void;
@@ -9,6 +10,7 @@ describe(nameof({ monitorFetch }), (it) => {
 		unsubscribe = monitorFetch();
 	});
 	afterAll(() => {
+		loadSignals.set([]);
 		unsubscribe?.();
 	});
 

@@ -12,6 +12,7 @@ describe(nameof({ monitorDOM }), (it) => {
 		unsubscribe = monitorDOM();
 	});
 	afterAll(() => {
+		loadSignals.set([]);
 		unsubscribe?.();
 	});
 

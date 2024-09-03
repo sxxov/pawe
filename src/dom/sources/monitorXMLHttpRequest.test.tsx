@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { loadProgress } from '../../core/load/progress/loadProgress';
 import { nameof } from '../../utils/type/nameof';
 import { monitorXMLHttpRequest } from './monitorXMLHttpRequest';
+import { loadSignals } from '../../core/load/signal/loadSignals';
 
 describe(nameof({ monitorXMLHttpRequest }), (it) => {
 	let unsubscribe: () => void;
@@ -9,6 +10,7 @@ describe(nameof({ monitorXMLHttpRequest }), (it) => {
 		unsubscribe = monitorXMLHttpRequest();
 	});
 	afterAll(() => {
+		loadSignals.set([]);
 		unsubscribe?.();
 	});
 
