@@ -19,7 +19,7 @@ export function use<T extends Record<string, Signal<any>>>(
 	}
 
 	const values = Object.fromEntries(
-		entries.map(([k, v]) => [`$${k}`, v] as const),
+		entries.map(([k, store]) => [`$${k}`, store.get()] as const),
 	) as Parameters<typeof callback>[0];
 	const subscriber = (k: string, v: unknown) => {
 		const prev = values[`$${k}`];
