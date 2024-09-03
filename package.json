@@ -22,7 +22,8 @@
 		"build": "vite build",
 		"postinstall": "patch-package",
 		"pretest": "playwright install --with-deps",
-		"test": "vitest run"
+		"test": "vitest run",
+		"prepublishOnly": "npm run build"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.1.1",
