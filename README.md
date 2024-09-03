@@ -14,7 +14,7 @@ Run this command in your terminal:
 npm i pawe
 ```
 
-Then, add this everywhere you want to use `pawe` in your project:
+Then, add this in your layout (e.g. `layout.tsx`, `+layout.svelte`, etc.)
 
 ```js
 import 'pawe';
@@ -29,7 +29,7 @@ Include this in the `<head>` of your HTML:
 ```html
 <script
 	type="module"
-	src="https://cdn.jsdelivr.net/npm/pawe"
+	src="https://cdn.jsdelivr.net/npm/pawe/dist/index.js"
 ></script>
 ```
 
@@ -41,13 +41,23 @@ This is the **default mode**. This means `pawe` will automatically start monitor
 
 #### Example
 
+A basic progress bar.
+
 ```html
 <style>
+	/* using CSS custom properties for values */
 	#progress {
 		width: var(--pawe-progress-percent, 0%);
-		background: hsl(0 0% 100%);
+		background: hsl(0 0% 0%);
+
+		position: fixed;
+		height: 2px;
+		top: 0;
+		left: 0;
+		transition: opacity 1s ease;
 	}
 
+	/* using HTML attributes for state changes */
 	:root[data-pawe='idle'] #progress {
 		opacity: 0;
 	}
@@ -81,7 +91,7 @@ Here are all the exposed values in HTML/CSS that you can use:
 
 You can also use the JavaScript API to get the progress values programmatically.
 
-For the full list of available methods, see the [`index.ts`](https://github.com/sxxov/pawe/blob/main/src/index.ts) file.
+For the full list of available exports, see the [`index.ts`](https://github.com/sxxov/pawe/blob/main/src/index.ts) file.
 
 > <sup>Better docs are coming soon™!</sup>
 
@@ -111,7 +121,8 @@ You can also use `pawe` in manual mode by importing from `pawe/api`. This means 
 import { monitorDOM, createLoad, loadProgress } from 'pawe/api';
 
 // only monitor the DOM
-// skipping fetch, xhr, & injection of css vars
+// skipping things like fetch, xhr, & injection of css vars,
+// that are activated in automatic mode
 monitorDOM();
 
 // add your own load signal to the calculated progress
@@ -128,6 +139,18 @@ const unsubscribe = loadProgress.subscribe((progress) => {
 	console.log(progress);
 });
 ```
+
+## Data Sources
+
+-   `DOM` - Track load events from DOM elements that are statically & dynamically added to the page
+    -   `<img>` load (both eager & lazy)
+    -   `<video>` load (when it starts loading until it's ready to play)
+    -   `<audio>` load (when it starts loading until it's ready to play)
+    -   `<iframe>` load
+    -   `<object>` load
+    -   `<embed>` load
+-   `fetch` - Track data stream from `fetch` requests
+-   `XMLHttpRequest` - Track `progress` events from `XMLHttpRequest`s
 
 ## License
 
