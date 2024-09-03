@@ -7,7 +7,7 @@ export default defineConfig({
 		lib: {
 			entry: 'src/index.ts',
 			formats: ['es'],
-			name: 'pase',
+			name: 'pawe',
 		},
 		rollupOptions: {
 			input: {

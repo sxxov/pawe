@@ -18,19 +18,19 @@ describe(nameof({ useInCSS }), (it) => {
 
 	it.sequential('should expose data to css', () => {
 		expect(`${loadProgress.get()}`).toEqual(
-			document.documentElement.style.getPropertyValue('--pase-progress'),
+			document.documentElement.style.getPropertyValue('--pawe-progress'),
 		);
 		expect(`${loadBar.get()}`).toEqual(
-			document.documentElement.style.getPropertyValue('--pase-bar'),
+			document.documentElement.style.getPropertyValue('--pawe-bar'),
 		);
 
 		createLoad().set(0.5);
 
 		expect(`${loadProgress.get()}`).toEqual(
-			document.documentElement.style.getPropertyValue('--pase-progress'),
+			document.documentElement.style.getPropertyValue('--pawe-progress'),
 		);
 		expect(`${loadBar.get()}`).toEqual(
-			document.documentElement.style.getPropertyValue('--pase-bar'),
+			document.documentElement.style.getPropertyValue('--pawe-bar'),
 		);
 	});
 });

@@ -8,38 +8,38 @@ export function useInCSS() {
 		{ loadProgress, loadBar },
 		({ $loadProgress, $loadBar }) => {
 			if ($loadProgress < 1) {
-				root.setAttribute(`data-pase`, 'loading');
+				root.setAttribute(`data-pawe`, 'loading');
 			} else {
-				root.setAttribute(`data-pase`, 'idle');
+				root.setAttribute(`data-pawe`, 'idle');
 			}
 
-			root.style.setProperty(`--pase-progress`, `${$loadProgress}`);
+			root.style.setProperty(`--pawe-progress`, `${$loadProgress}`);
 			root.style.setProperty(
-				`--pase-progress-percent`,
+				`--pawe-progress-percent`,
 				`${$loadProgress * 100}%`,
 			);
 			root.style.setProperty(
-				`--pase-progress-percent-int`,
+				`--pawe-progress-percent-int`,
 				`${Math.round($loadProgress * 100)}`,
 			);
 
-			root.style.setProperty(`--pase-bar`, `${$loadBar}`);
-			root.style.setProperty(`--pase-bar-percent`, `${$loadBar * 100}%`);
+			root.style.setProperty(`--pawe-bar`, `${$loadBar}`);
+			root.style.setProperty(`--pawe-bar-percent`, `${$loadBar * 100}%`);
 			root.style.setProperty(
-				`--pase-bar-percent-int`,
+				`--pawe-bar-percent-int`,
 				`${Math.round($loadBar * 100)}`,
 			);
 		},
 	);
 
 	return () => {
-		root.removeAttribute(`data-pase`);
-		root.style.removeProperty(`--pase-progress`);
-		root.style.removeProperty(`--pase-progress-percent`);
-		root.style.removeProperty(`--pase-progress-percent-int`);
-		root.style.removeProperty(`--pase-bar`);
-		root.style.removeProperty(`--pase-bar-percent`);
-		root.style.removeProperty(`--pase-bar-percent-int`);
+		root.removeAttribute(`data-pawe`);
+		root.style.removeProperty(`--pawe-progress`);
+		root.style.removeProperty(`--pawe-progress-percent`);
+		root.style.removeProperty(`--pawe-progress-percent-int`);
+		root.style.removeProperty(`--pawe-bar`);
+		root.style.removeProperty(`--pawe-bar-percent`);
+		root.style.removeProperty(`--pawe-bar-percent-int`);
 		unsubscribe();
 	};
 }
