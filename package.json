@@ -1,5 +1,6 @@
 {
 	"name": "pawe",
+	"description": "An automatic web progress bar.",
 	"version": "0.0.1",
 	"type": "module",
 	"module": "dist/index.js",
