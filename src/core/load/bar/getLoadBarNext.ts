@@ -6,7 +6,7 @@ export function getLoadBarNext(
 	curr: number,
 	deltaT: number,
 ) {
-	const upToAmplitude = 0.0005;
+	const upToAmplitude = 0.001;
 	const awayAmplitude = 0.0002;
 
 	const maxDistanceAwayFromBase = (1 - baseProgress) / 3;
