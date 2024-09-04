@@ -25,6 +25,7 @@
 		"test": "vitest run",
 		"prepublishOnly": "npm run build"
 	},
+	"license": "MIT",
 	"devDependencies": {
 		"@eslint/compat": "^1.1.1",
 		"@eslint/eslintrc": "^3.1.0",
