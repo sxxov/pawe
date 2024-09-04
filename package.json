@@ -4,6 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"module": "dist/index.js",
+	"browser": "dist/index.js",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
