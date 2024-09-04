@@ -21,7 +21,6 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"postinstall": "patch-package",
 		"pretest": "playwright install --with-deps",
 		"test": "vitest run",
 		"prepublishOnly": "npm run build"
