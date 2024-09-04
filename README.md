@@ -29,7 +29,7 @@ Include this in the `<head>` of your HTML:
 ```html
 <script
 	type="module"
-	src="https://cdn.jsdelivr.net/npm/pawe/dist/index.js"
+	src="https://cdn.jsdelivr.net/npm/pawe"
 ></script>
 ```
 
@@ -45,19 +45,27 @@ A basic progress bar.
 
 ```html
 <style>
-	/* using CSS custom properties for values */
+	/* 1. using CSS custom properties for values */
 	#progress {
-		width: var(--pawe-progress-percent, 0%);
+		/* progress bar */
+		width: var(--pawe-bar-percent, 0%);
 		background: hsl(0 0% 0%);
 
 		position: fixed;
 		height: 2px;
 		top: 0;
 		left: 0;
-		transition: opacity 1s ease;
+		transition:
+			width 1s ease-out,
+			opacity 1s;
+
+		/* progress text (i.e. '100%') */
+		&::after {
+			content: var(--pawe-bar-percent-string) '%';
+		}
 	}
 
-	/* using HTML attributes for state changes */
+	/* 2. using HTML attributes for state changes */
 	:root[data-pawe='idle'] #progress {
 		opacity: 0;
 	}
@@ -78,14 +86,16 @@ Here are all the exposed values in HTML/CSS that you can use:
 
 ##### CSS Custom Properties
 
-| Property                      | Range          | Description                                                                                                                                                                                                                                                |
-| ----------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--pawe-bar`                  | `0` to `1`     | The augmented progress of the page load that approximates the loading in between down time of collected data points.<br><br>Users generally prefer this as it provides feedback even if their connections are spotty, causing data to come down in bursts. |
-| `--pawe-bar-percent`          | `0%` to `100%` | ''                                                                                                                                                                                                                                                         |
-| `--pawe-bar-percent-int`      | `0` to `100`   | ''                                                                                                                                                                                                                                                         |
-| `--pawe-progress`             | `0` to `1`     | The objective progress of the page load solely based on the collected data points.                                                                                                                                                                         |
-| `--pawe-progress-percent`     | `0%` to `100%` | ''                                                                                                                                                                                                                                                         |
-| `--pawe-progress-percent-int` | `0` to `100`   | ''                                                                                                                                                                                                                                                         |
+| Property                         | Range            | Description                                                                                                                                                                                                                                                |
+| -------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pawe-bar`                     | `0` to `1`       | The augmented progress of the page load that approximates the loading in between down time of collected data points.<br><br>Users generally prefer this as it provides feedback even if their connections are spotty, causing data to come down in bursts. |
+| `--pawe-bar-percent`             | `0%` to `100%`   | '', in percent.                                                                                                                                                                                                                                            |
+| `--pawe-bar-percent-int`         | `0` to `100`     | '', floored, without unit.                                                                                                                                                                                                                                 |
+| `--pawe-bar-percent-string`      | `'0'` to `'100'` | '', in string type, for use with the `content` property.                                                                                                                                                                                                   |
+| `--pawe-progress`                | `0` to `1`       | The objective progress of the page load solely based on the collected data points.                                                                                                                                                                         |
+| `--pawe-progress-percent`        | `0%` to `100%`   | '', in percent.                                                                                                                                                                                                                                            |
+| `--pawe-progress-percent-int`    | `0` to `100`     | '', floored, without unit.                                                                                                                                                                                                                                 |
+| `--pawe-progress-percent-string` | `'0'` to `'100'` | '', in string type, for use with the `content` property.                                                                                                                                                                                                   |
 
 #### JavaScript API
 
@@ -98,11 +108,11 @@ For the full list of available exports, see the [`index.ts`](https://github.com/
 ##### Example
 
 ```js
-import { loadProgress } from 'pawe';
+import { loadBar } from 'pawe';
 
-const unsubscribe = loadProgress.subscribe((progress) => {
-	// this is equivalent to `--pawe-progress`
-	console.log(progress);
+const unsubscribe = loadBar.subscribe((bar) => {
+	// this is equivalent to `--pawe-bar`
+	console.log(bar);
 });
 ```
 
