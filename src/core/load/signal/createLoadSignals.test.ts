@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest';
-import { nameof } from '../../../utils/type/nameof';
-import { createLoadSignals } from './createLoadSignals';
+import { nameof } from '../../../utils/type/nameof.js';
+import { createLoadSignals } from './createLoadSignals.js';
 
 describe(nameof({ createLoadSignals }), (it) => {
 	it('should start at an empty array', () => {

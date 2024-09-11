@@ -1,6 +1,6 @@
-import { loadBar } from '@/core/load/bar/loadBar';
-import { loadProgress } from '@/core/load/progress/loadProgress';
-import { use } from '@/utils/signal/use';
+import { loadBar } from '@/core/load/bar/loadBar.js';
+import { loadProgress } from '@/core/load/progress/loadProgress.js';
+import { use } from '@/utils/signal/use.js';
 
 export function useInCSS() {
 	const root = document.documentElement;

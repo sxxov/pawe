@@ -1,4 +1,4 @@
-import { createLoad } from '../../core/load/create/createLoad';
+import { createLoad } from '../../core/load/create/createLoad.js';
 
 export function monitorDOM() {
 	// sync added dom nodes

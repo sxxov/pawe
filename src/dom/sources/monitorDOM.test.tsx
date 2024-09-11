@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { loadProgress } from '../../core/load/progress/loadProgress';
-import { loadSignals } from '../../core/load/signal/loadSignals';
-import { monitorDOM } from './monitorDOM';
-import { nameof } from '../../utils/type/nameof';
+import { loadProgress } from '../../core/load/progress/loadProgress.js';
+import { loadSignals } from '../../core/load/signal/loadSignals.js';
+import { monitorDOM } from './monitorDOM.js';
+import { nameof } from '../../utils/type/nameof.js';
 import { type ReactElement } from 'react';
 
 describe(nameof({ monitorDOM }), (it) => {

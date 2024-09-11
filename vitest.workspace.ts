@@ -1,5 +1,5 @@
 import { mergeConfig } from 'vite';
-import config from './vite.config';
+import config from './vite.config.js';
 import react from '@vitejs/plugin-react';
 
 // vitest.workspace.ts

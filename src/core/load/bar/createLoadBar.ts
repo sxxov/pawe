@@ -1,7 +1,7 @@
-import { Signal } from '@/utils/signal/Signal';
-import { use } from '@/utils/signal/use';
-import { getLoadBarNext } from './getLoadBarNext';
-import { loadProgress } from '../progress/loadProgress';
+import { Signal } from '@/utils/signal/Signal.js';
+import { use } from '@/utils/signal/use.js';
+import { getLoadBarNext } from './getLoadBarNext.js';
+import { loadProgress } from '../progress/loadProgress.js';
 
 /** @private */
 export function createLoadBar(context = loadProgress) {

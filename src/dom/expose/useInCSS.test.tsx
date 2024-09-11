@@ -1,10 +1,10 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
-import { nameof } from '../../utils/type/nameof';
-import { useInCSS } from './useInCSS';
-import { loadBar } from '../../core/load/bar/loadBar';
-import { loadProgress } from '../../core/load/progress/loadProgress';
-import { loadSignals } from '../../core/load/signal/loadSignals';
-import { createLoad } from '../../core/load/create/createLoad';
+import { nameof } from '../../utils/type/nameof.js';
+import { useInCSS } from './useInCSS.js';
+import { loadBar } from '../../core/load/bar/loadBar.js';
+import { loadProgress } from '../../core/load/progress/loadProgress.js';
+import { loadSignals } from '../../core/load/signal/loadSignals.js';
+import { createLoad } from '../../core/load/create/createLoad.js';
 
 describe(nameof({ useInCSS }), (it) => {
 	let unsubscribe: () => void;

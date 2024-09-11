@@ -1,6 +1,6 @@
-import { type ReadableSignal } from './ReadableSignal';
-import { type Signal } from './Signal';
-import { type Subscriber } from './Subscriber';
+import { type ReadableSignal } from './ReadableSignal.js';
+import { type Signal } from './Signal.js';
+import { type Subscriber } from './Subscriber.js';
 
 export class Supply<T> implements ReadableSignal<T> {
 	constructor(private readonly signal: Signal<T>) {}

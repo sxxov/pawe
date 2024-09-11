@@ -1,6 +1,6 @@
-import { average } from '@/utils/math/average';
-import { loadSignals } from '../signal/loadSignals';
-import { LoadSignal } from '../signal/LoadSignal';
+import { average } from '@/utils/math/average.js';
+import { loadSignals } from '../signal/loadSignals.js';
+import { LoadSignal } from '../signal/LoadSignal.js';
 
 /** @private */
 export function createLoadProgress(context = loadSignals) {

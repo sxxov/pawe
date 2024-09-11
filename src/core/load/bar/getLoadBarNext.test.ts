@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest';
-import { getLoadBarNext } from './getLoadBarNext';
-import { nameof } from '@/utils/type/nameof';
+import { getLoadBarNext } from './getLoadBarNext.js';
+import { nameof } from '@/utils/type/nameof.js';
 
 describe(nameof({ getLoadBarNext }), (it) => {
 	it('should grow from 0 to augmented', () => {

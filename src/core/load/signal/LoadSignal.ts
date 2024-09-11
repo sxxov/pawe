@@ -1,7 +1,7 @@
-import { clamp01 } from '../../../utils/math/clamp01';
-import { Signal } from '../../../utils/signal/Signal';
-import { type LoadProgressScalar } from './LoadProgressScalar';
-import { type ReadableLoadSignal } from './ReadableLoadSignal';
+import { clamp01 } from '../../../utils/math/clamp01.js';
+import { Signal } from '../../../utils/signal/Signal.js';
+import { type LoadProgressScalar } from './LoadProgressScalar.js';
+import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
 export class LoadSignal
 	extends Signal<LoadProgressScalar>

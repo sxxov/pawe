@@ -1,4 +1,4 @@
-import { clamp } from '@/utils/math/clamp';
+import { clamp } from '@/utils/math/clamp.js';
 
 /** @private */
 export function getLoadBarNext(

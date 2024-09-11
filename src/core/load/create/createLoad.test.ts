@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest';
-import { nameof } from '../../../utils/type/nameof';
-import { createLoad } from './createLoad';
-import { createLoadProgress } from '../progress/createLoadProgress';
-import { createLoadSignals } from '../signal/createLoadSignals';
+import { nameof } from '../../../utils/type/nameof.js';
+import { createLoad } from './createLoad.js';
+import { createLoadProgress } from '../progress/createLoadProgress.js';
+import { createLoadSignals } from '../signal/createLoadSignals.js';
 
 const createGlobalLoad = createLoad;
 

@@ -1,7 +1,7 @@
-import { Supply } from './Supply';
-import { type Invalidator } from './Invalidator';
-import { type Subscriber } from './Subscriber';
-import { type WritableSignal } from './WritableSignal';
+import { Supply } from './Supply.js';
+import { type Invalidator } from './Invalidator.js';
+import { type Subscriber } from './Subscriber.js';
+import { type WritableSignal } from './WritableSignal.js';
 
 export class Signal<T> implements WritableSignal<T> {
 	private static equals(a: any, b: any) {

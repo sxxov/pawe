@@ -1,4 +1,4 @@
-import { type ReadableSignal } from './ReadableSignal';
+import { type ReadableSignal } from './ReadableSignal.js';
 
 export type WritableSignal<T> = ReadableSignal<T> & {
 	set(value: T): void;

@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest';
-import { nameof } from '../../../utils/type/nameof';
-import { createLoad as createGlobalLoad } from '../create/createLoad';
-import { createLoadProgress } from './createLoadProgress';
-import { createLoadSignals } from '../signal/createLoadSignals';
+import { nameof } from '../../../utils/type/nameof.js';
+import { createLoad as createGlobalLoad } from '../create/createLoad.js';
+import { createLoadProgress } from './createLoadProgress.js';
+import { createLoadSignals } from '../signal/createLoadSignals.js';
 
 describe(nameof({ createLoadProgress }), (it) => {
 	it('should be at 1 with no load', () => {

@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
-import { loadProgress } from '../../core/load/progress/loadProgress';
-import { nameof } from '../../utils/type/nameof';
-import { monitorFetch } from './monitorFetch';
-import { loadSignals } from '../../core/load/signal/loadSignals';
+import { loadProgress } from '../../core/load/progress/loadProgress.js';
+import { nameof } from '../../utils/type/nameof.js';
+import { monitorFetch } from './monitorFetch.js';
+import { loadSignals } from '../../core/load/signal/loadSignals.js';
 
 describe(nameof({ monitorFetch }), (it) => {
 	let unsubscribe: () => void;

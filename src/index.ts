@@ -1,7 +1,7 @@
-import { useInCSS } from './dom/expose/useInCSS';
-import { monitorDOM } from './dom/sources/monitorDOM';
-import { monitorFetch } from './dom/sources/monitorFetch';
-import { monitorXMLHttpRequest } from './dom/sources/monitorXMLHttpRequest';
+import { useInCSS } from './dom/expose/useInCSS.js';
+import { monitorDOM } from './dom/sources/monitorDOM.js';
+import { monitorFetch } from './dom/sources/monitorFetch.js';
+import { monitorXMLHttpRequest } from './dom/sources/monitorXMLHttpRequest.js';
 
 const unsubscribes = [
 	monitorDOM(),
@@ -16,4 +16,4 @@ export function stop() {
 	}
 }
 
-export * from './api';
+export * from './api.js';

@@ -1,4 +1,4 @@
-import { type Subscriber } from './Subscriber';
+import { type Subscriber } from './Subscriber.js';
 
 export type ReadableSignal<T> = {
 	get(): T;

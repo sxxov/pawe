@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { noop } from '../functional/noop';
-import { type Signal } from './Signal';
+import { noop } from '../functional/noop.js';
+import { type Signal } from './Signal.js';
 
 export function use<T extends Record<string, Signal<any>>>(
 	dependencies: T,

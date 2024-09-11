@@ -1,5 +1,5 @@
-import { Signal } from '@/utils/signal/Signal';
-import { type ReadableLoadSignal } from './ReadableLoadSignal';
+import { Signal } from '@/utils/signal/Signal.js';
+import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
 /** @private */
 export function createLoadSignals() {

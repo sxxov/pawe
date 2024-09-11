@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
-import { loadProgress } from '../../core/load/progress/loadProgress';
-import { nameof } from '../../utils/type/nameof';
-import { monitorXMLHttpRequest } from './monitorXMLHttpRequest';
-import { loadSignals } from '../../core/load/signal/loadSignals';
+import { loadProgress } from '../../core/load/progress/loadProgress.js';
+import { nameof } from '../../utils/type/nameof.js';
+import { monitorXMLHttpRequest } from './monitorXMLHttpRequest.js';
+import { loadSignals } from '../../core/load/signal/loadSignals.js';
 
 describe(nameof({ monitorXMLHttpRequest }), (it) => {
 	let unsubscribe: () => void;
