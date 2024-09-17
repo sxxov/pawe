@@ -1,19 +1,37 @@
-import { useInCSS } from './dom/expose/useInCSS.js';
-import { monitorDOM } from './dom/sources/monitorDOM.js';
-import { monitorFetch } from './dom/sources/monitorFetch.js';
-import { monitorXMLHttpRequest } from './dom/sources/monitorXMLHttpRequest.js';
+import {
+	monitorDOM,
+	monitorFetch,
+	monitorXMLHttpRequest,
+	writeDOM,
+} from './api.js';
 
-const unsubscribes = [
-	monitorDOM(),
-	monitorFetch(),
-	monitorXMLHttpRequest(),
-	useInCSS(),
-];
+let unsubscribes: (() => void)[] | undefined;
 
-export function stop() {
+export function startAuto() {
+	if (unsubscribes) {
+		return stopAuto;
+	}
+
+	unsubscribes = [
+		monitorDOM(),
+		monitorFetch(),
+		monitorXMLHttpRequest(),
+		writeDOM(),
+	];
+	return stopAuto;
+}
+
+export function stopAuto() {
+	if (!unsubscribes) {
+		return;
+	}
+
 	for (const unsubscribe of unsubscribes) {
 		unsubscribe();
 	}
+	unsubscribes = undefined;
 }
+
+startAuto();
 
 export * from './api.js';
