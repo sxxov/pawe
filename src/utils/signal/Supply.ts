@@ -3,7 +3,7 @@ import { type Signal } from './Signal.js';
 import { type Subscriber } from './Subscriber.js';
 
 export class Supply<T> implements ReadableSignal<T> {
-	constructor(private readonly signal: Signal<T>) {}
+	constructor(protected readonly signal: Signal<T>) {}
 
 	public get(): T {
 		return this.signal.get();
