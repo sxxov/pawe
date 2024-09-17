@@ -147,6 +147,7 @@ const config = /** @type {const} @satisfies {Linter.Config[]} */ ([
 			'no-empty-pattern': 'off',
 			'func-names': 'off',
 			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/unified-signatures': 'off',
 		},
 	},
 ]);

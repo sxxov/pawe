@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
 import { pool } from '@/core/pool/pool.js';
 import { createProgress } from '@/core/loader/progress/createProgress.js';
 import { createLoad as createGlobalLoad } from '@/core/load/createLoad.js';
