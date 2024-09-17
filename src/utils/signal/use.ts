@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { noop } from '../functional/noop.js';
-import { type Signal } from './Signal.js';
+import { type ReadableSignal } from './ReadableSignal.ts';
 
-export function use<T extends Record<string, Signal<any>>>(
+export function use<T extends Record<string, ReadableSignal<any>>>(
 	dependencies: T,
 	callback: (values: {
 		[k in keyof T as `$${k extends string | number ? k : never}`]: ReturnType<
