@@ -1,29 +1,13 @@
-import { clamp01 } from '../../../utils/math/clamp01.js';
-import { Signal } from '../../../utils/signal/Signal.js';
-import { type LoadProgressScalar } from './LoadProgressScalar.js';
-import { LoadSupply } from './LoadSupply.ts';
-import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
+import { Supply } from '@/utils/signal/Supply.ts';
+import { type LoadProgressScalar } from './LoadProgressScalar.ts';
+import { type ReadableLoadSignal } from './ReadableLoadSignal.ts';
 
-export class LoadSignal
-	extends Signal<LoadProgressScalar>
+export class LoadSupply
+	extends Supply<LoadProgressScalar>
 	implements ReadableLoadSignal
 {
-	#supply: LoadSupply | undefined;
-	public override get supply(): LoadSupply {
-		// eslint-disable-next-line no-return-assign
-		return (this.#supply ??= new LoadSupply(this));
-	}
-
-	constructor(initialValue: LoadProgressScalar = 0) {
-		super(initialValue);
-	}
-
-	public override set(value: LoadProgressScalar) {
-		super.set(clamp01(value));
-	}
-
 	public finish() {
-		this.set(1);
+		this.signal.set(1);
 	}
 
 	public then<FulfilledResult = void, RejectedResult = never>(
