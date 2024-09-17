@@ -3,7 +3,6 @@ import { use } from '@/utils/signal/use.js';
 import { getLoadBarNext } from './getLoadBarNext.js';
 import { loadProgress } from '../progress/loadProgress.js';
 
-/** @private */
 export function createLoadBar(context = loadProgress) {
 	const loadBar = new Signal(0);
 	const loading = context.derive((progress) => progress < 1);

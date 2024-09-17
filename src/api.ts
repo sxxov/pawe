@@ -1,10 +1,13 @@
 export { createLoad } from './core/load/create/createLoad.js';
 export { LoadSignal } from './core/load/signal/LoadSignal.js';
+export { type ReadableLoadSignal } from './core/load/signal/ReadableLoadSignal.js';
 export { type LoadProgressScalar } from './core/load/signal/LoadProgressScalar.js';
 export { loadBar } from './core/load/bar/loadBar.js';
+export { createLoadBar } from './core/load/bar/createLoadBar.js';
 export { loadProgress } from './core/load/progress/loadProgress.js';
+export { createLoadProgress } from './core/load/progress/createLoadProgress.js';
 export { loadSignals } from './core/load/signal/loadSignals.js';
-export { type ReadableLoadSignal } from './core/load/signal/ReadableLoadSignal.js';
+export { createLoadSignals } from './core/load/signal/createLoadSignals.js';
 export { monitorDOM } from './dom/sources/monitorDOM.js';
 export { monitorFetch } from './dom/sources/monitorFetch.js';
 export { monitorXMLHttpRequest } from './dom/sources/monitorXMLHttpRequest.js';

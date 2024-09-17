@@ -1,7 +1,6 @@
 import { Signal } from '@/utils/signal/Signal.js';
 import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
-/** @private */
 export function createLoadSignals() {
 	const loadSignals = new Signal<ReadableLoadSignal[]>([]);
 	const loadSignalToUnsubscribe = new Map<ReadableLoadSignal, () => void>();

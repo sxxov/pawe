@@ -2,7 +2,6 @@ import { average } from '@/utils/math/average.js';
 import { loadSignals } from '../signal/loadSignals.js';
 import { LoadSignal } from '../signal/LoadSignal.js';
 
-/** @private */
 export function createLoadProgress(context = loadSignals) {
 	const loadProgress = new LoadSignal();
 	context.subscribe((v) => {
