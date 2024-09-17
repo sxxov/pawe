@@ -1,6 +1,10 @@
+import { loadProgress } from '@/api.ts';
 import { createLoad } from '../../core/load/create/createLoad.js';
 
 export function monitorDOM() {
+	// on load
+	monitorReadyState();
+
 	// sync added dom nodes
 	document.querySelectorAll('img').forEach(monitorImg);
 	document.querySelectorAll('video').forEach(monitorVideoOrAudio);
@@ -50,6 +54,24 @@ export function monitorDOM() {
 	return () => {
 		mo.disconnect();
 	};
+}
+
+function monitorReadyState() {
+	if (document.readyState === 'complete') {
+		return;
+	}
+
+	const p = createLoad();
+	const unsubscribe = loadProgress.subscribe((progress) => {
+		p.set(Math.min(progress, 0.99));
+	});
+
+	window.addEventListener('readystatechange', () => {
+		if (document.readyState === 'complete') {
+			p.set(1);
+			unsubscribe();
+		}
+	});
 }
 
 function monitorImg(img: HTMLImageElement) {
