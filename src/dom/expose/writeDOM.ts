@@ -1,9 +1,32 @@
-import { bar } from '@/core/loader/bar/bar.js';
-import { progress } from '@/core/loader/progress/progress.js';
-import { use } from '@/utils/signal/use.js';
+/* eslint-disable @typescript-eslint/unified-signatures */
+import { bar as globalBar } from '@/core/loader/bar/bar.js';
+import { progress as globalProgress } from '@/core/loader/progress/progress.js';
 
-export function writeDOM(root = document.documentElement) {
-	const unsubscribe = use({ progress, bar }, ({ $progress, $bar }) => {
+/**
+ * Write attributes & CSS Properties to the DOM onto {@linkcode root}, based on
+ * the provided contexts
+ */
+export function writeDOM(
+	root: HTMLElement | SVGElement,
+	progress: typeof globalProgress,
+	bar: typeof globalBar,
+): () => void;
+/**
+ * Write attributes & CSS Properties to the DOM onto {@linkcode root}, based on
+ * the global context
+ */
+export function writeDOM(root: HTMLElement | SVGElement): () => void;
+/**
+ * Write attributes & CSS Properties to the DOM onto `<html>`, based on the
+ * global context
+ */
+export function writeDOM(): () => void;
+export function writeDOM(
+	root: HTMLElement | SVGElement = document.documentElement,
+	progress = globalProgress,
+	bar = globalBar,
+) {
+	const unsubscribeProgress = progress.subscribe(($progress) => {
 		if ($progress < 1) {
 			root.setAttribute(`data-pawe`, 'loading');
 		} else {
@@ -23,7 +46,8 @@ export function writeDOM(root = document.documentElement) {
 			`--pawe-progress-percent-string`,
 			`'${Math.round($progress * 100)}'`,
 		);
-
+	});
+	const unsubscribeBar = bar.subscribe(($bar) => {
 		root.style.setProperty(`--pawe-bar`, `${$bar}`);
 		root.style.setProperty(`--pawe-bar-percent`, `${$bar * 100}%`);
 		root.style.setProperty(
@@ -46,6 +70,7 @@ export function writeDOM(root = document.documentElement) {
 		root.style.removeProperty(`--pawe-bar-percent`);
 		root.style.removeProperty(`--pawe-bar-percent-int`);
 		root.style.removeProperty(`--pawe-bar-percent-string`);
-		unsubscribe();
+		unsubscribeProgress();
+		unsubscribeBar();
 	};
 }
