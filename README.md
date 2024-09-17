@@ -153,6 +153,7 @@ const unsubscribe = loadProgress.subscribe((progress) => {
 ## Data Sources
 
 -   `DOM` - Track load events from DOM elements that are statically & dynamically added to the page
+    -   `document.readyState` until `complete`
     -   `<img>` load (both eager & lazy)
     -   `<video>` load (when it starts loading until it's ready to play)
     -   `<audio>` load (when it starts loading until it's ready to play)
