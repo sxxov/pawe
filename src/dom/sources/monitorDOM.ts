@@ -93,12 +93,18 @@ export function monitorDOM(
 			p.set(Math.min(progress, 0.99));
 		});
 
+		const resolve = () => {
+			p.set(1);
+			unsubscribe();
+		};
 		document.addEventListener('readystatechange', () => {
 			if (document.readyState === 'complete') {
-				p.set(1);
-				unsubscribe();
+				resolve();
 			}
 		});
+		if ((document.readyState as string) === 'complete') {
+			resolve();
+		}
 	}
 
 	function monitorImg(img: HTMLImageElement) {
@@ -141,6 +147,9 @@ export function monitorDOM(
 			};
 			img.addEventListener('load', resolve, { once: true });
 			img.addEventListener('error', resolve, { once: true });
+			if (img.complete) {
+				resolve();
+			}
 		}
 	}
 
@@ -157,26 +166,33 @@ export function monitorDOM(
 		if (videoOrAudio.networkState === videoOrAudio.NETWORK_IDLE) {
 			const p = createLoad();
 
-			videoOrAudio.addEventListener(
-				'loadeddata',
-				() => {
-					p.set(1);
-				},
-				{ once: true },
-			);
+			const resolve = () => {
+				p.set(1);
+			};
+			videoOrAudio.addEventListener('loadeddata', resolve, {
+				once: true,
+			});
+			if (videoOrAudio.readyState >= videoOrAudio.HAVE_CURRENT_DATA) {
+				resolve();
+			}
 		} else {
 			videoOrAudio.addEventListener(
 				'loadstart',
 				() => {
 					const p = createLoad();
 
-					videoOrAudio.addEventListener(
-						'loadeddata',
-						() => {
-							p.set(1);
-						},
-						{ once: true },
-					);
+					const resolve = () => {
+						p.set(1);
+					};
+					videoOrAudio.addEventListener('loadeddata', resolve, {
+						once: true,
+					});
+					if (
+						videoOrAudio.readyState >=
+						videoOrAudio.HAVE_CURRENT_DATA
+					) {
+						resolve();
+					}
 				},
 				{ once: true },
 			);
@@ -188,16 +204,22 @@ export function monitorDOM(
 			!(
 				object.data &&
 				object.contentWindow?.location.href === 'about:blank'
-			)
+			) ||
+			object.contentDocument?.readyState === 'complete'
 		) {
 			return;
 		}
 
 		const p = createLoad();
 
-		object.addEventListener('load', () => {
+		const resolve = () => {
 			p.set(1);
-		});
+		};
+		object.addEventListener('load', resolve, { once: true });
+		object.addEventListener('error', resolve, { once: true });
+		if ((object.contentDocument?.readyState as string) === 'complete') {
+			resolve();
+		}
 	}
 
 	function monitorEmbed(embed: HTMLEmbedElement) {
@@ -213,10 +235,24 @@ export function monitorDOM(
 	}
 
 	function monitorIframe(obj: HTMLIFrameElement) {
+		if (
+			obj.contentWindow?.location.href === 'about:blank' ||
+			obj.srcdoc ||
+			!obj.src ||
+			obj.contentDocument?.readyState === 'complete'
+		) {
+			return;
+		}
+
 		const p = createLoad();
 
-		obj.addEventListener('load', () => {
+		const resolve = () => {
 			p.set(1);
-		});
+		};
+		obj.addEventListener('load', resolve, { once: true });
+		obj.addEventListener('error', resolve, { once: true });
+		if ((obj.contentDocument?.readyState as string) === 'complete') {
+			resolve();
+		}
 	}
 }
