@@ -1,6 +1,8 @@
-import { createLoad } from '../../core/load/create/createLoad.js';
+import { loadSignals } from '../../core/load/signal/loadSignals.js';
+import { createLoad as createGlobalLoad } from '../../core/load/create/createLoad.js';
 
-export function monitorFetch() {
+export function monitorFetch(context = loadSignals) {
+	const createLoad = () => createGlobalLoad(context);
 	const { fetch } = globalThis;
 
 	globalThis.fetch = async (...args) => {
