@@ -27,11 +27,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
-		},
-
-		// remove this when the issue is resolved
-		// https://github.com/vitest-dev/vitest/issues/6519
-		"allowImportingTsExtensions": true
+		}
 	},
 	"include": [
 		"types/**/*.ts",
