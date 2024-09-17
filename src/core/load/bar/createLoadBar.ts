@@ -40,5 +40,5 @@ export function createLoadBar(context = loadProgress) {
 		};
 	});
 
-	return loadBar;
+	return loadBar.supply;
 }

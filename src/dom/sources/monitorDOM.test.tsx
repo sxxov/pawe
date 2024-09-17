@@ -24,7 +24,6 @@ describe(nameof({ monitorDOM }), (it) => {
 		async () => {
 			loadSignals.set([]);
 			expect(loadProgress.get()).toEqual(1);
-			loadProgress.set(0);
 			await new Promise<void>((resolve) => {
 				render(
 					<img
@@ -34,6 +33,9 @@ describe(nameof({ monitorDOM }), (it) => {
 						}}
 					/>,
 				);
+				setTimeout(() => {
+					expect(loadProgress.get()).toEqual(0);
+				}, 0);
 			});
 			expect(loadProgress.get()).toEqual(1);
 		},
@@ -47,7 +49,6 @@ describe(nameof({ monitorDOM }), (it) => {
 		async () => {
 			loadSignals.set([]);
 			expect(loadProgress.get()).toEqual(1);
-			loadProgress.set(0);
 			const Component = ({ onComplete }: { onComplete: () => void }) => {
 				const promises: Promise<void>[] = [];
 				const images: ReactElement[] = [];
@@ -73,6 +74,9 @@ describe(nameof({ monitorDOM }), (it) => {
 			};
 			await new Promise<void>((resolve) => {
 				render(<Component onComplete={resolve} />);
+				setTimeout(() => {
+					expect(loadProgress.get()).toEqual(0);
+				}, 0);
 			});
 			expect(loadProgress.get()).toEqual(1);
 		},

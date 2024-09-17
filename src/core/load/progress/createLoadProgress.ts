@@ -19,5 +19,5 @@ export function createLoadProgress(context = loadSignals) {
 		}
 	});
 
-	return loadProgress;
+	return loadProgress.supply;
 }
