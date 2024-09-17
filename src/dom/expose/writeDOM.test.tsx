@@ -1,15 +1,15 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { nameof } from '../../utils/type/nameof.js';
-import { useInCSS } from './useInCSS.js';
+import { writeDOM } from './writeDOM.js';
 import { bar } from '../../core/loader/bar/bar.js';
 import { progress } from '../../core/loader/progress/progress.js';
 import { pool } from '../../core/pool/pool.js';
 import { createLoad } from '../../core/load/createLoad.js';
 
-describe(nameof({ useInCSS }), (it) => {
+describe(nameof({ writeDOM }), (it) => {
 	let unsubscribe: () => void;
 	beforeAll(() => {
-		unsubscribe = useInCSS();
+		unsubscribe = writeDOM();
 	});
 	afterAll(() => {
 		pool.set([]);

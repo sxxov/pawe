@@ -2,8 +2,7 @@ import { bar } from '@/core/loader/bar/bar.js';
 import { progress } from '@/core/loader/progress/progress.js';
 import { use } from '@/utils/signal/use.js';
 
-export function useInCSS() {
-	const root = document.documentElement;
+export function writeDOM(root = document.documentElement) {
 	const unsubscribe = use({ progress, bar }, ({ $progress, $bar }) => {
 		if ($progress < 1) {
 			root.setAttribute(`data-pawe`, 'loading');
