@@ -1,7 +1,7 @@
 export { createLoad } from './core/load/create/createLoad.js';
 export { LoadSignal } from './core/load/signal/LoadSignal.js';
 export { type ReadableLoadSignal } from './core/load/signal/ReadableLoadSignal.js';
-export { type LoadProgressScalar } from './core/load/signal/LoadProgressScalar.js';
+export { type LoadScalar } from './core/load/signal/LoadScalar.ts';
 export { loadBar } from './core/load/bar/loadBar.js';
 export { createLoadBar } from './core/load/bar/createLoadBar.js';
 export { loadProgress } from './core/load/progress/loadProgress.js';

@@ -1,11 +1,11 @@
 import { clamp01 } from '../../../utils/math/clamp01.js';
 import { Signal } from '../../../utils/signal/Signal.js';
-import { type LoadProgressScalar } from './LoadProgressScalar.js';
+import { type LoadScalar } from './LoadScalar.ts';
 import { LoadSupply } from './LoadSupply.ts';
 import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
 export class LoadSignal
-	extends Signal<LoadProgressScalar>
+	extends Signal<LoadScalar>
 	implements ReadableLoadSignal
 {
 	#supply: LoadSupply | undefined;
@@ -14,11 +14,11 @@ export class LoadSignal
 		return (this.#supply ??= new LoadSupply(this));
 	}
 
-	constructor(initialValue: LoadProgressScalar = 0) {
+	constructor(initialValue: LoadScalar = 0) {
 		super(initialValue);
 	}
 
-	public override set(value: LoadProgressScalar) {
+	public override set(value: LoadScalar) {
 		super.set(clamp01(value));
 	}
 

@@ -1,9 +1,9 @@
 import { Supply } from '@/utils/signal/Supply.ts';
-import { type LoadProgressScalar } from './LoadProgressScalar.ts';
+import { type LoadScalar } from './LoadScalar.ts';
 import { type ReadableLoadSignal } from './ReadableLoadSignal.ts';
 
 export class LoadSupply
-	extends Supply<LoadProgressScalar>
+	extends Supply<LoadScalar>
 	implements ReadableLoadSignal
 {
 	public finish() {
