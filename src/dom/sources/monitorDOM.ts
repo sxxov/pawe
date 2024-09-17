@@ -66,7 +66,7 @@ function monitorReadyState() {
 		p.set(Math.min(progress, 0.99));
 	});
 
-	window.addEventListener('readystatechange', () => {
+	document.addEventListener('readystatechange', () => {
 		if (document.readyState === 'complete') {
 			p.set(1);
 			unsubscribe();
