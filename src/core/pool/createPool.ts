@@ -1,7 +1,7 @@
 import { Signal } from '@/utils/signal/Signal.js';
-import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
+import { type ReadableLoadSignal } from '../load/ReadableLoadSignal.js';
 
-export function createLoadSignals() {
+export function createPool() {
 	const loadSignals = new Signal<ReadableLoadSignal[]>([]);
 	const loadSignalToUnsubscribe = new Map<ReadableLoadSignal, () => void>();
 	loadSignals.subscribeDeferred((signals) => {

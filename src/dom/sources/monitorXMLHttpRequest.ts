@@ -1,7 +1,7 @@
-import { loadSignals } from '../../core/load/signal/loadSignals.js';
-import { createLoad as createGlobalLoad } from '../../core/load/create/createLoad.js';
+import { pool } from '../../core/pool/pool.js';
+import { createLoad as createGlobalLoad } from '../../core/load/createLoad.js';
 
-export function monitorXMLHttpRequest(context = loadSignals) {
+export function monitorXMLHttpRequest(context = pool) {
 	const createLoad = () => createGlobalLoad(context);
 	const { XMLHttpRequest } = globalThis;
 

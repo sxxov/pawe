@@ -1,9 +1,9 @@
 import { Signal } from '@/utils/signal/Signal.js';
 import { use } from '@/utils/signal/use.js';
-import { getLoadBarNext } from './getLoadBarNext.js';
-import { loadProgress } from '../progress/loadProgress.js';
+import { getBarNext } from './getBarNext.js';
+import { progress } from '../progress/progress.js';
 
-export function createLoadBar(context = loadProgress) {
+export function createBar(context = progress) {
 	const loadBar = new Signal(0);
 	const loading = context.derive((progress) => progress < 1);
 	let rafHandle: ReturnType<typeof requestAnimationFrame> | undefined;
@@ -28,7 +28,7 @@ export function createLoadBar(context = loadProgress) {
 			const deltaT = t - prevT;
 			prevT = t;
 
-			const next = getLoadBarNext(context.get(), loadBar.get(), deltaT);
+			const next = getBarNext(context.get(), loadBar.get(), deltaT);
 			loadBar.set(next);
 		});
 

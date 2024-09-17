@@ -1,11 +1,7 @@
 import { clamp } from '@/utils/math/clamp.js';
 
 /** @private */
-export function getLoadBarNext(
-	baseProgress: number,
-	curr: number,
-	deltaT: number,
-) {
+export function getBarNext(baseProgress: number, curr: number, deltaT: number) {
 	const upToAmplitude = 0.001;
 	const awayAmplitude = 0.0002;
 

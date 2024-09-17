@@ -108,11 +108,11 @@ For the full list of available exports, see the [`index.ts`](https://github.com/
 ##### Example
 
 ```js
-import { loadBar } from 'pawe';
+import { bar } from 'pawe';
 
-const unsubscribe = loadBar.subscribe((bar) => {
+const unsubscribe = bar.subscribe(($bar) => {
 	// this is equivalent to `--pawe-bar`
-	console.log(bar);
+	console.log(`bar: ${$bar}`);
 });
 ```
 
@@ -120,7 +120,7 @@ const unsubscribe = loadBar.subscribe((bar) => {
 
 You can also use `pawe` in manual mode by importing from `pawe/api`. This means you are in charge of starting the monitoring & scaffolding any other load signals you want to track.
 
-#### Example
+#### Example: Adding Loads & Reading Progress from the Global Store
 
 ```js
 // note the different import!
@@ -128,25 +128,68 @@ You can also use `pawe` in manual mode by importing from `pawe/api`. This means 
 //				  monitoring is started automatically
 // * `pawe/api`	- manual mode
 //				  only the api is exposed & no side effects are ran
-import { monitorDOM, createLoad, loadProgress } from 'pawe/api';
+import { monitorDOM, createLoad, progress } from 'pawe/api';
 
-// only monitor the DOM
-// skipping things like fetch, xhr, & injection of css vars,
-// that are activated in automatic mode
+// log the progress values as we add loads
+const unsubscribe = progress.subscribe(($progress) => {
+	console.log(`progress: ${$progress}`);
+});
+
+// add monitoring of the DOM (skipping the rest)
 monitorDOM();
 
 // add your own load signal to the calculated progress
 const load = createLoad();
-load.set(0.5);
-void (async () => {
-	// wait for something to load
-	await load;
-})();
-load.finish(); // equivalent to `load.set(1)`
+console.log('starting load...');
+console.log('loaded: 0%');
 
-// or use the progress values directly
-const unsubscribe = loadProgress.subscribe((progress) => {
-	console.log(progress);
+// simulate loading
+load.set(0.5);
+console.log('loaded: 50%');
+
+// mark as finished after 1 second
+setTimeout(() => {
+	load.finish();
+	// or
+	// `load.set(1)`
+}, 1000);
+
+// the load acts as a promise that will resolve when it hits `1`
+await load;
+console.log('loaded: 100%');
+```
+
+#### Example: Creating a Local Progress Bar
+
+```js
+// note the different import!
+// * `pawe` 	- automatic mode
+//				  monitoring is started automatically
+// * `pawe/api`	- manual mode
+//				  only the api is exposed & no side effects are ran
+import { createPool, createLoad, createProgress, createBar } from 'pawe/api';
+
+// where all the loads are stored
+const pool = createPool();
+
+// create a load signal
+const load = createLoad(pool);
+//                      ^^^^
+//                      note that `pool` is passed as the first argument!
+//                      this is so that the load signal is added to our pool
+//                      instead of the global one
+
+// create a progress signal
+const progress = createProgress(pool);
+// create a progress bar (for UI)
+const bar = createBar(progress);
+
+// use the progress values
+const unsubscribeProgress = progress.subscribe(($progress) => {
+	console.log(`progress: ${$progress}`);
+});
+const unsubscribeBar = bar.subscribe(($bar) => {
+	console.log(`bar: ${$bar}`);
 });
 ```
 

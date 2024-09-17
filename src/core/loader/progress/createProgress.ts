@@ -1,8 +1,8 @@
 import { average } from '@/utils/math/average.js';
-import { loadSignals } from '../signal/loadSignals.js';
-import { LoadSignal } from '../signal/LoadSignal.js';
+import { pool } from '../../pool/pool.js';
+import { LoadSignal } from '../../load/LoadSignal.js';
 
-export function createLoadProgress(context = loadSignals) {
+export function createProgress(context = pool) {
 	const loadProgress = new LoadSignal();
 	context.subscribe((v) => {
 		if (v.length === 0) {

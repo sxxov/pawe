@@ -1,7 +1,7 @@
-import { clamp01 } from '../../../utils/math/clamp01.js';
-import { Signal } from '../../../utils/signal/Signal.js';
-import { type LoadScalar } from './LoadScalar.ts';
-import { LoadSupply } from './LoadSupply.ts';
+import { clamp01 } from '../../utils/math/clamp01.js';
+import { Signal } from '../../utils/signal/Signal.js';
+import { type LoadScalar } from './LoadScalar.js';
+import { LoadSupply } from './LoadSupply.js';
 import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
 export class LoadSignal

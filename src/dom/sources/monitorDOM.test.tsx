@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { loadProgress } from '../../core/load/progress/loadProgress.js';
-import { loadSignals } from '../../core/load/signal/loadSignals.js';
+import { progress } from '../../core/loader/progress/progress.js';
+import { pool } from '../../core/pool/pool.js';
 import { monitorDOM } from './monitorDOM.js';
 import { nameof } from '../../utils/type/nameof.js';
 import { type ReactElement } from 'react';
@@ -12,7 +12,7 @@ describe(nameof({ monitorDOM }), (it) => {
 		unsubscribe = monitorDOM();
 	});
 	afterAll(() => {
-		loadSignals.set([]);
+		pool.set([]);
 		unsubscribe?.();
 	});
 
@@ -22,8 +22,8 @@ describe(nameof({ monitorDOM }), (it) => {
 			retry: 3,
 		},
 		async () => {
-			loadSignals.set([]);
-			expect(loadProgress.get()).toEqual(1);
+			pool.set([]);
+			expect(progress.get()).toEqual(1);
 			await new Promise<void>((resolve) => {
 				render(
 					<img
@@ -34,10 +34,10 @@ describe(nameof({ monitorDOM }), (it) => {
 					/>,
 				);
 				setTimeout(() => {
-					expect(loadProgress.get()).toEqual(0);
+					expect(progress.get()).toEqual(0);
 				}, 0);
 			});
-			expect(loadProgress.get()).toEqual(1);
+			expect(progress.get()).toEqual(1);
 		},
 	);
 
@@ -47,8 +47,8 @@ describe(nameof({ monitorDOM }), (it) => {
 			retry: 3,
 		},
 		async () => {
-			loadSignals.set([]);
-			expect(loadProgress.get()).toEqual(1);
+			pool.set([]);
+			expect(progress.get()).toEqual(1);
 			const Component = ({ onComplete }: { onComplete: () => void }) => {
 				const promises: Promise<void>[] = [];
 				const images: ReactElement[] = [];
@@ -75,10 +75,10 @@ describe(nameof({ monitorDOM }), (it) => {
 			await new Promise<void>((resolve) => {
 				render(<Component onComplete={resolve} />);
 				setTimeout(() => {
-					expect(loadProgress.get()).toEqual(0);
+					expect(progress.get()).toEqual(0);
 				}, 0);
 			});
-			expect(loadProgress.get()).toEqual(1);
+			expect(progress.get()).toEqual(1);
 		},
 	);
 

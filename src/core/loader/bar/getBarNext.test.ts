@@ -1,11 +1,10 @@
 import { describe, expect } from 'vitest';
-import { getLoadBarNext } from './getLoadBarNext.js';
+import { getBarNext } from './getBarNext.js';
 import { nameof } from '@/utils/type/nameof.js';
 
-describe(nameof({ getLoadBarNext }), (it) => {
+describe(nameof({ getBarNext }), (it) => {
 	it('should grow from 0 to augmented', () => {
-		expect(createLoadBarReport([{ target: 0, t: 0 }]))
-			.toMatchInlineSnapshot(`
+		expect(createBarReport([{ target: 0, t: 0 }])).toMatchInlineSnapshot(`
 				{
 				  "duration": 21800,
 				  "sequence": [
@@ -234,8 +233,7 @@ describe(nameof({ getLoadBarNext }), (it) => {
 	});
 
 	it('should grow from 0 to 0.5 to augmented', () => {
-		expect(createLoadBarReport([{ target: 0.5, t: 0 }]))
-			.toMatchInlineSnapshot(`
+		expect(createBarReport([{ target: 0.5, t: 0 }])).toMatchInlineSnapshot(`
 				{
 				  "duration": 20500,
 				  "sequence": [
@@ -452,7 +450,7 @@ describe(nameof({ getLoadBarNext }), (it) => {
 
 	it('should grow from 0 to 0.5 to 0.75 to augmented', () => {
 		expect(
-			createLoadBarReport([
+			createBarReport([
 				{ target: 0.5, t: 0 },
 				{ target: 0.75, t: 8000 },
 			]),
@@ -713,21 +711,21 @@ describe(nameof({ getLoadBarNext }), (it) => {
 	});
 });
 
-function createLoadBarReport(
+function createBarReport(
 	keyframes: {
 		target: number;
 		t: number;
 	}[],
 	deltaT = 1000 / 10,
 ) {
-	const sequence = createLoadBarSequence(keyframes, deltaT);
+	const sequence = createBarSequence(keyframes, deltaT);
 	return {
 		duration: (sequence.length - 1) * deltaT,
 		sequence,
 	};
 }
 
-function createLoadBarSequence(
+function createBarSequence(
 	keyframes: {
 		target: number;
 		t: number;
@@ -746,7 +744,7 @@ function createLoadBarSequence(
 		}
 
 		const { target } = keyframe;
-		const next = getLoadBarNext(target, curr, deltaT);
+		const next = getBarNext(target, curr, deltaT);
 		sequence.push(next);
 		if (curr.toPrecision(4) === next.toPrecision(4)) {
 			break;

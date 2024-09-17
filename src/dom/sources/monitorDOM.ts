@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { loadSignals } from '@/core/load/signal/loadSignals.js';
-import { createLoad as createGlobalLoad } from '../../core/load/create/createLoad.js';
-import { createLoadProgress } from '@/core/load/progress/createLoadProgress.ts';
+import { pool } from '@/core/pool/pool.js';
+import { createProgress } from '@/core/loader/progress/createProgress.js';
+import { createLoad as createGlobalLoad } from '@/core/load/createLoad.js';
 
 /** Monitor DOM nodes starting from a custom root element, into your own context */
-export function monitorDOM(
-	root: ParentNode,
-	context: typeof loadSignals,
-): () => void;
+export function monitorDOM(root: ParentNode, context: typeof pool): () => void;
 /**
  * Monitor DOM nodes starting from a custom root element, into the global
  * context
@@ -15,10 +12,7 @@ export function monitorDOM(
 export function monitorDOM(root: ParentNode): () => void;
 /** Monitor all DOM nodes within `<body>`, into the global context */
 export function monitorDOM(): () => void;
-export function monitorDOM(
-	root: ParentNode = document.body,
-	context = loadSignals,
-) {
+export function monitorDOM(root: ParentNode = document.body, context = pool) {
 	const createLoad = () => createGlobalLoad(context);
 
 	// on load
@@ -90,7 +84,7 @@ export function monitorDOM(
 		// * affects the backing context in a way where it propagates to all
 		//   other `loadProgress`es
 		//     * (it does, as its subscription updates the backing context)
-		const loadProgress = createLoadProgress(context);
+		const loadProgress = createProgress(context);
 
 		const p = createLoad();
 		const unsubscribe = loadProgress.subscribe((progress) => {

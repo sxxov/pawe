@@ -1,14 +1,14 @@
 import { describe, expect } from 'vitest';
-import { nameof } from '../../../utils/type/nameof.js';
+import { nameof } from '../../utils/type/nameof.js';
 import { createLoad } from './createLoad.js';
-import { createLoadProgress } from '../progress/createLoadProgress.js';
-import { createLoadSignals } from '../signal/createLoadSignals.js';
+import { createProgress } from '../loader/progress/createProgress.js';
+import { createPool } from '../pool/createPool.js';
 
 const createGlobalLoad = createLoad;
 
 describe(nameof({ createLoad }), (it) => {
 	it('should add the signal to loadSignals', () => {
-		const loadSignals = createLoadSignals();
+		const loadSignals = createPool();
 		const createLoad = () => createGlobalLoad(loadSignals);
 
 		const load = createLoad();
@@ -16,9 +16,9 @@ describe(nameof({ createLoad }), (it) => {
 	});
 
 	it('should influence loadProgress', () => {
-		const loadSignals = createLoadSignals();
+		const loadSignals = createPool();
 		const createLoad = () => createGlobalLoad(loadSignals);
-		const loadProgress = createLoadProgress(loadSignals);
+		const loadProgress = createProgress(loadSignals);
 
 		const initialLoadProgress = loadProgress.get();
 		const load = createLoad();

@@ -1,10 +1,10 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { nameof } from '../../utils/type/nameof.js';
 import { useInCSS } from './useInCSS.js';
-import { loadBar } from '../../core/load/bar/loadBar.js';
-import { loadProgress } from '../../core/load/progress/loadProgress.js';
-import { loadSignals } from '../../core/load/signal/loadSignals.js';
-import { createLoad } from '../../core/load/create/createLoad.js';
+import { bar } from '../../core/loader/bar/bar.js';
+import { progress } from '../../core/loader/progress/progress.js';
+import { pool } from '../../core/pool/pool.js';
+import { createLoad } from '../../core/load/createLoad.js';
 
 describe(nameof({ useInCSS }), (it) => {
 	let unsubscribe: () => void;
@@ -12,24 +12,24 @@ describe(nameof({ useInCSS }), (it) => {
 		unsubscribe = useInCSS();
 	});
 	afterAll(() => {
-		loadSignals.set([]);
+		pool.set([]);
 		unsubscribe?.();
 	});
 
 	it.sequential('should expose data to css', () => {
-		expect(`${loadProgress.get()}`).toEqual(
+		expect(`${progress.get()}`).toEqual(
 			document.documentElement.style.getPropertyValue('--pawe-progress'),
 		);
-		expect(`${loadBar.get()}`).toEqual(
+		expect(`${bar.get()}`).toEqual(
 			document.documentElement.style.getPropertyValue('--pawe-bar'),
 		);
 
 		createLoad().set(0.5);
 
-		expect(`${loadProgress.get()}`).toEqual(
+		expect(`${progress.get()}`).toEqual(
 			document.documentElement.style.getPropertyValue('--pawe-progress'),
 		);
-		expect(`${loadBar.get()}`).toEqual(
+		expect(`${bar.get()}`).toEqual(
 			document.documentElement.style.getPropertyValue('--pawe-bar'),
 		);
 	});

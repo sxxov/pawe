@@ -1,44 +1,41 @@
-import { loadBar } from '@/core/load/bar/loadBar.js';
-import { loadProgress } from '@/core/load/progress/loadProgress.js';
+import { bar } from '@/core/loader/bar/bar.js';
+import { progress } from '@/core/loader/progress/progress.js';
 import { use } from '@/utils/signal/use.js';
 
 export function useInCSS() {
 	const root = document.documentElement;
-	const unsubscribe = use(
-		{ loadProgress, loadBar },
-		({ $loadProgress, $loadBar }) => {
-			if ($loadProgress < 1) {
-				root.setAttribute(`data-pawe`, 'loading');
-			} else {
-				root.setAttribute(`data-pawe`, 'idle');
-			}
+	const unsubscribe = use({ progress, bar }, ({ $progress, $bar }) => {
+		if ($progress < 1) {
+			root.setAttribute(`data-pawe`, 'loading');
+		} else {
+			root.setAttribute(`data-pawe`, 'idle');
+		}
 
-			root.style.setProperty(`--pawe-progress`, `${$loadProgress}`);
-			root.style.setProperty(
-				`--pawe-progress-percent`,
-				`${$loadProgress * 100}%`,
-			);
-			root.style.setProperty(
-				`--pawe-progress-percent-int`,
-				`${Math.round($loadProgress * 100)}`,
-			);
-			root.style.setProperty(
-				`--pawe-progress-percent-string`,
-				`'${Math.round($loadProgress * 100)}'`,
-			);
+		root.style.setProperty(`--pawe-progress`, `${$progress}`);
+		root.style.setProperty(
+			`--pawe-progress-percent`,
+			`${$progress * 100}%`,
+		);
+		root.style.setProperty(
+			`--pawe-progress-percent-int`,
+			`${Math.round($progress * 100)}`,
+		);
+		root.style.setProperty(
+			`--pawe-progress-percent-string`,
+			`'${Math.round($progress * 100)}'`,
+		);
 
-			root.style.setProperty(`--pawe-bar`, `${$loadBar}`);
-			root.style.setProperty(`--pawe-bar-percent`, `${$loadBar * 100}%`);
-			root.style.setProperty(
-				`--pawe-bar-percent-int`,
-				`${Math.round($loadBar * 100)}`,
-			);
-			root.style.setProperty(
-				`--pawe-bar-percent-string`,
-				`'${Math.round($loadBar * 100)}'`,
-			);
-		},
-	);
+		root.style.setProperty(`--pawe-bar`, `${$bar}`);
+		root.style.setProperty(`--pawe-bar-percent`, `${$bar * 100}%`);
+		root.style.setProperty(
+			`--pawe-bar-percent-int`,
+			`${Math.round($bar * 100)}`,
+		);
+		root.style.setProperty(
+			`--pawe-bar-percent-string`,
+			`'${Math.round($bar * 100)}'`,
+		);
+	});
 
 	return () => {
 		root.removeAttribute(`data-pawe`);

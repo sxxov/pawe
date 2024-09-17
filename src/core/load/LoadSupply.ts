@@ -1,6 +1,6 @@
-import { Supply } from '@/utils/signal/Supply.ts';
-import { type LoadScalar } from './LoadScalar.ts';
-import { type ReadableLoadSignal } from './ReadableLoadSignal.ts';
+import { Supply } from '@/utils/signal/Supply.js';
+import { type LoadScalar } from './LoadScalar.js';
+import { type ReadableLoadSignal } from './ReadableLoadSignal.js';
 
 export class LoadSupply
 	extends Supply<LoadScalar>
