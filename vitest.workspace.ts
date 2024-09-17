@@ -1,6 +1,8 @@
 import { mergeConfig } from 'vite';
-import config from './vite.config.js';
 import react from '@vitejs/plugin-react';
+// change this back to .js when the issue is fixed
+// https://github.com/vitest-dev/vitest/issues/6519
+import config from './vite.config.ts';
 
 // vitest.workspace.ts
 import { defineWorkspace } from 'vitest/config';
