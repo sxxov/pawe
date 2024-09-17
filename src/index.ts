@@ -2,7 +2,7 @@ import {
 	monitorDOM,
 	monitorFetch,
 	monitorXMLHttpRequest,
-	writeDOM,
+	outIntoDOM,
 } from './api.js';
 
 let unsubscribes: (() => void)[] | undefined;
@@ -16,7 +16,7 @@ export function startAuto() {
 		monitorDOM(),
 		monitorFetch(),
 		monitorXMLHttpRequest(),
-		writeDOM(),
+		outIntoDOM(),
 	];
 	return stopAuto;
 }

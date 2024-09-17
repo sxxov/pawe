@@ -14,4 +14,4 @@ export { monitorDOM } from './dom/sources/monitorDOM.js';
 export { monitorFetch } from './dom/sources/monitorFetch.js';
 export { monitorXMLHttpRequest } from './dom/sources/monitorXMLHttpRequest.js';
 
-export { writeDOM } from './dom/expose/writeDOM.js';
+export { outIntoDOM } from './dom/expose/outIntoDOM.js';

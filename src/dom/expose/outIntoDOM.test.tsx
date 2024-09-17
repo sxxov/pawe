@@ -1,15 +1,15 @@
 import { afterAll, beforeAll, describe, expect } from 'vitest';
 import { nameof } from '../../utils/type/nameof.js';
-import { writeDOM } from './writeDOM.js';
+import { outIntoDOM } from './outIntoDOM.js';
 import { bar } from '../../core/loader/bar/bar.js';
 import { progress } from '../../core/loader/progress/progress.js';
 import { pool } from '../../core/pool/pool.js';
 import { createLoad } from '../../core/load/createLoad.js';
 
-describe(nameof({ writeDOM }), (it) => {
+describe(nameof({ outIntoDOM }), (it) => {
 	let unsubscribe: () => void;
 	beforeAll(() => {
-		unsubscribe = writeDOM();
+		unsubscribe = outIntoDOM();
 	});
 	afterAll(() => {
 		pool.set([]);

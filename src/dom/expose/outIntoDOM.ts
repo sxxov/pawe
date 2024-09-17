@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
 import { bar as globalBar } from '@/core/loader/bar/bar.js';
 import { progress as globalProgress } from '@/core/loader/progress/progress.js';
 
@@ -6,7 +5,7 @@ import { progress as globalProgress } from '@/core/loader/progress/progress.js';
  * Write attributes & CSS Properties to the DOM onto {@linkcode root}, based on
  * the provided contexts
  */
-export function writeDOM(
+export function outIntoDOM(
 	root: HTMLElement | SVGElement,
 	progress: typeof globalProgress,
 	bar: typeof globalBar,
@@ -15,13 +14,13 @@ export function writeDOM(
  * Write attributes & CSS Properties to the DOM onto {@linkcode root}, based on
  * the global context
  */
-export function writeDOM(root: HTMLElement | SVGElement): () => void;
+export function outIntoDOM(root: HTMLElement | SVGElement): () => void;
 /**
  * Write attributes & CSS Properties to the DOM onto `<html>`, based on the
  * global context
  */
-export function writeDOM(): () => void;
-export function writeDOM(
+export function outIntoDOM(): () => void;
+export function outIntoDOM(
 	root: HTMLElement | SVGElement = document.documentElement,
 	progress = globalProgress,
 	bar = globalBar,
