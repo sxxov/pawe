@@ -94,8 +94,8 @@ export function monitorDOM(
 		});
 
 		const resolve = () => {
-			p.set(1);
 			unsubscribe();
+			p.set(1);
 		};
 		document.addEventListener('readystatechange', () => {
 			if (document.readyState === 'complete') {
