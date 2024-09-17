@@ -10,13 +10,16 @@ export function monitorDOM(root: ParentNode, context: typeof pool): () => void;
  * context
  */
 export function monitorDOM(root: ParentNode): () => void;
-/** Monitor all DOM nodes within `<body>`, into the global context */
+/** Monitor all DOM nodes within `<html>`, into the global context */
 export function monitorDOM(): () => void;
-export function monitorDOM(root: ParentNode = document.body, context = pool) {
+export function monitorDOM(
+	root: ParentNode = document.documentElement,
+	context = pool,
+) {
 	const createLoad = () => createGlobalLoad(context);
 
 	// on load
-	if (root === document.body) {
+	if (root === document.documentElement) {
 		monitorReadyState();
 	}
 
@@ -61,7 +64,7 @@ export function monitorDOM(root: ParentNode = document.body, context = pool) {
 	};
 
 	if (document.readyState === 'loading') {
-		root.addEventListener('DOMContentLoaded', startMutationObserver);
+		document.addEventListener('DOMContentLoaded', startMutationObserver);
 	} else {
 		startMutationObserver();
 	}
@@ -91,7 +94,7 @@ export function monitorDOM(root: ParentNode = document.body, context = pool) {
 			p.set(Math.min(progress, 0.99));
 		});
 
-		root.addEventListener('readystatechange', () => {
+		document.addEventListener('readystatechange', () => {
 			if (document.readyState === 'complete') {
 				p.set(1);
 				unsubscribe();
