@@ -1,10 +1,10 @@
 import { average } from '@/utils/math/average.js';
-import { pool } from '../../pool/pool.js';
+import { type pool as globalPool } from '../../pool/pool.js';
 import { LoadSignal } from '../../load/LoadSignal.js';
 
-export function createProgress(context = pool) {
+export function createProgress(pool: typeof globalPool) {
 	const loadProgress = new LoadSignal();
-	context.subscribe((v) => {
+	pool.subscribe((v) => {
 		if (v.length === 0) {
 			loadProgress.set(1);
 			return;
@@ -15,7 +15,7 @@ export function createProgress(context = pool) {
 	});
 	loadProgress.subscribe((value) => {
 		if (value >= 1) {
-			context.set([]);
+			pool.set([]);
 		}
 	});
 

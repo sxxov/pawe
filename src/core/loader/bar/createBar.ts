@@ -1,11 +1,11 @@
 import { Signal } from '@/utils/signal/Signal.js';
 import { use } from '@/utils/signal/use.js';
 import { getBarNext } from './getBarNext.js';
-import { progress } from '../progress/progress.js';
+import { type progress as globalProgress } from '../progress/progress.js';
 
-export function createBar(context = progress) {
+export function createBar(progress: typeof globalProgress) {
 	const loadBar = new Signal(0);
-	const loading = context.derive((progress) => progress < 1);
+	const loading = progress.derive((progress) => progress < 1);
 	let rafHandle: ReturnType<typeof requestAnimationFrame> | undefined;
 
 	use({ loading }, ({ $loading }) => {
@@ -28,7 +28,7 @@ export function createBar(context = progress) {
 			const deltaT = t - prevT;
 			prevT = t;
 
-			const next = getBarNext(context.get(), loadBar.get(), deltaT);
+			const next = getBarNext(progress.get(), loadBar.get(), deltaT);
 			loadBar.set(next);
 		});
 
