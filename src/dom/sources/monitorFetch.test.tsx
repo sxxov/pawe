@@ -24,4 +24,17 @@ describe(nameof({ monitorFetch }), (it) => {
 		await resp.blob();
 		expect(progress.get()).toEqual(1);
 	});
+
+	it.sequential('should not monitor bypassed fetch', async () => {
+		expect(progress.get()).toEqual(1);
+		const promise = fetch('https://fakeresponder.com/?sleep=0', {
+			pawe: 'bypass',
+		});
+		setTimeout(() => {
+			expect(progress.get()).toEqual(1);
+		}, 0);
+		const resp = await promise;
+		await resp.blob();
+		expect(progress.get()).toEqual(1);
+	});
 });

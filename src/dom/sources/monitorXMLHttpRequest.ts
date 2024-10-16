@@ -7,6 +7,12 @@ export function monitorXMLHttpRequest(context = pool) {
 
 	globalThis.XMLHttpRequest = class extends XMLHttpRequest {
 		public override send(...args: Parameters<XMLHttpRequest['send']>) {
+			if (this.pawe === 'bypass') {
+				delete this.pawe;
+				super.send(...args);
+				return;
+			}
+
 			const p = createLoad();
 
 			this.addEventListener('progress', (event) => {
