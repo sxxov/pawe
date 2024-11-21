@@ -18,49 +18,46 @@ export function monitorDOM(
 	const createLoad = () => createGlobalLoad(context);
 
 	// on load
+	let unsubscribeReadyState: (() => void) | undefined;
 	if (root === document.documentElement) {
 		monitorReadyState();
 	}
 
+	const nodeToUnsubscribe = new Map<Node, () => void>();
+	const tagToMonitor = {
+		img: monitorImg,
+		video: monitorVideoOrAudio,
+		audio: monitorVideoOrAudio,
+		object: monitorObject,
+		embed: monitorEmbed,
+		iframe: monitorIframe,
+	} as const;
+	const invokeMonitor = (
+		node: Node,
+		monitor: (node: any) => (() => void) | undefined,
+	) => {
+		const unsubscribe = monitor(node);
+		if (unsubscribe) {
+			nodeToUnsubscribe.set(node, unsubscribe);
+		}
+	};
+
 	// sync added dom nodes
-	root.querySelectorAll('img').forEach(monitorImg);
-	root.querySelectorAll('video').forEach(monitorVideoOrAudio);
-	root.querySelectorAll('audio').forEach(monitorVideoOrAudio);
-	root.querySelectorAll('object').forEach(monitorObject);
-	root.querySelectorAll('embed').forEach(monitorEmbed);
-	root.querySelectorAll('iframe').forEach(monitorIframe);
+	for (const [tag, monitor] of Object.entries(tagToMonitor)) {
+		for (const node of root.querySelectorAll(tag)) {
+			invokeMonitor(node, monitor);
+		}
+	}
 
 	// async added dom nodes
-	const nodeToUnsubscribe = new Map<Node, () => void>();
 	const mo = new MutationObserver((mutations: MutationRecord[]) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.addedNodes) {
-				let unsubscribe: (() => void) | undefined;
-
-				switch (node.nodeName) {
-					case 'IMG':
-						unsubscribe = monitorImg(node as HTMLImageElement);
-						break;
-					case 'VIDEO':
-					case 'AUDIO':
-						unsubscribe = monitorVideoOrAudio(
-							node as HTMLVideoElement | HTMLAudioElement,
-						);
-						break;
-					case 'OBJECT':
-						unsubscribe = monitorObject(node as HTMLObjectElement);
-						break;
-					case 'EMBED':
-						unsubscribe = monitorEmbed(node as HTMLEmbedElement);
-						break;
-					case 'IFRAME':
-						unsubscribe = monitorIframe(node as HTMLIFrameElement);
-						break;
-					default:
-				}
-
-				if (unsubscribe) {
-					nodeToUnsubscribe.set(node, unsubscribe);
+				const tag =
+					node.nodeName.toLowerCase() as keyof typeof tagToMonitor;
+				const monitor = tagToMonitor[tag];
+				if (monitor) {
+					invokeMonitor(node, monitor);
 				}
 			}
 
@@ -84,11 +81,13 @@ export function monitorDOM(
 	}
 
 	return () => {
+		unsubscribeReadyState?.();
 		document.removeEventListener('DOMContentLoaded', startMutationObserver);
 		mo.disconnect();
 		for (const [, unsubscribe] of nodeToUnsubscribe) {
 			unsubscribe();
 		}
+		nodeToUnsubscribe.clear();
 	};
 
 	function monitorReadyState() {
