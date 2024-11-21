@@ -31,29 +31,44 @@ export function monitorDOM(
 	root.querySelectorAll('iframe').forEach(monitorIframe);
 
 	// async added dom nodes
+	const nodeToUnsubscribe = new Map<Node, () => void>();
 	const mo = new MutationObserver((mutations: MutationRecord[]) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.addedNodes) {
+				let unsubscribe: (() => void) | undefined;
+
 				switch (node.nodeName) {
 					case 'IMG':
-						monitorImg(node as HTMLImageElement);
+						unsubscribe = monitorImg(node as HTMLImageElement);
 						break;
 					case 'VIDEO':
 					case 'AUDIO':
-						monitorVideoOrAudio(
+						unsubscribe = monitorVideoOrAudio(
 							node as HTMLVideoElement | HTMLAudioElement,
 						);
 						break;
 					case 'OBJECT':
-						monitorObject(node as HTMLObjectElement);
+						unsubscribe = monitorObject(node as HTMLObjectElement);
 						break;
 					case 'EMBED':
-						monitorEmbed(node as HTMLEmbedElement);
+						unsubscribe = monitorEmbed(node as HTMLEmbedElement);
 						break;
 					case 'IFRAME':
-						monitorIframe(node as HTMLIFrameElement);
+						unsubscribe = monitorIframe(node as HTMLIFrameElement);
 						break;
 					default:
+				}
+
+				if (unsubscribe) {
+					nodeToUnsubscribe.set(node, unsubscribe);
+				}
+			}
+
+			for (const node of mutation.removedNodes) {
+				const unsubscribe = nodeToUnsubscribe.get(node);
+				if (unsubscribe) {
+					unsubscribe();
+					nodeToUnsubscribe.delete(node);
 				}
 			}
 		}
@@ -69,7 +84,11 @@ export function monitorDOM(
 	}
 
 	return () => {
+		document.removeEventListener('DOMContentLoaded', startMutationObserver);
 		mo.disconnect();
+		for (const [, unsubscribe] of nodeToUnsubscribe) {
+			unsubscribe();
+		}
 	};
 
 	function monitorReadyState() {
@@ -95,16 +114,20 @@ export function monitorDOM(
 
 		const resolve = () => {
 			unsubscribe();
-			p.set(1);
+			p.finish();
 		};
-		document.addEventListener('readystatechange', () => {
+		const resolveIfComplete = () => {
 			if (document.readyState === 'complete') {
 				resolve();
 			}
-		});
-		if ((document.readyState as string) === 'complete') {
+		};
+		document.addEventListener('readystatechange', resolveIfComplete);
+		resolveIfComplete();
+
+		return () => {
 			resolve();
-		}
+			document.removeEventListener('readystatechange', resolveIfComplete);
+		};
 	}
 
 	function monitorImg(img: HTMLImageElement) {
@@ -114,6 +137,10 @@ export function monitorDOM(
 
 		if (img.loading === 'lazy') {
 			let p: ReturnType<typeof createLoad>;
+			const resolve = () => {
+				p.finish();
+				io.disconnect();
+			};
 			const io = new IntersectionObserver(([entry]) => {
 				if (!entry) {
 					return;
@@ -129,28 +156,34 @@ export function monitorDOM(
 					) {
 						p = createLoad();
 
-						const resolve = () => {
-							p.set(1);
-							io.disconnect();
-						};
 						img.addEventListener('load', resolve);
 						img.addEventListener('error', resolve);
 					}
 				}
 			});
 			io.observe(img);
-		} else {
-			const p = createLoad();
 
-			const resolve = () => {
-				p.set(1);
-			};
-			img.addEventListener('load', resolve, { once: true });
-			img.addEventListener('error', resolve, { once: true });
-			if (img.complete) {
+			return () => {
 				resolve();
-			}
+				io.disconnect();
+			};
 		}
+
+		const p = createLoad();
+		const resolve = () => {
+			p.set(1);
+		};
+		img.addEventListener('load', resolve, { once: true });
+		img.addEventListener('error', resolve, { once: true });
+		if (img.complete) {
+			resolve();
+		}
+
+		return () => {
+			resolve();
+			img.removeEventListener('load', resolve);
+			img.removeEventListener('error', resolve);
+		};
 	}
 
 	function monitorVideoOrAudio(
@@ -175,28 +208,36 @@ export function monitorDOM(
 			if (videoOrAudio.readyState >= videoOrAudio.HAVE_CURRENT_DATA) {
 				resolve();
 			}
-		} else {
-			videoOrAudio.addEventListener(
-				'loadstart',
-				() => {
-					const p = createLoad();
 
-					const resolve = () => {
-						p.set(1);
-					};
-					videoOrAudio.addEventListener('loadeddata', resolve, {
-						once: true,
-					});
-					if (
-						videoOrAudio.readyState >=
-						videoOrAudio.HAVE_CURRENT_DATA
-					) {
-						resolve();
-					}
-				},
-				{ once: true },
-			);
+			return () => {
+				resolve();
+				videoOrAudio.removeEventListener('loadeddata', resolve);
+			};
 		}
+
+		let resolve: (() => void) | undefined;
+		const start = () => {
+			const p = createLoad();
+
+			resolve = () => {
+				p.set(1);
+			};
+			videoOrAudio.addEventListener('loadeddata', resolve, {
+				once: true,
+			});
+			if (videoOrAudio.readyState >= videoOrAudio.HAVE_CURRENT_DATA) {
+				resolve();
+			}
+		};
+		videoOrAudio.addEventListener('loadstart', start, { once: true });
+
+		return () => {
+			videoOrAudio.removeEventListener('loadstart', start);
+			if (resolve) {
+				resolve();
+				videoOrAudio.removeEventListener('loadeddata', resolve);
+			}
+		};
 	}
 
 	function monitorObject(object: HTMLObjectElement) {
@@ -211,7 +252,6 @@ export function monitorDOM(
 		}
 
 		const p = createLoad();
-
 		const resolve = () => {
 			p.set(1);
 		};
@@ -220,6 +260,12 @@ export function monitorDOM(
 		if ((object.contentDocument?.readyState as string) === 'complete') {
 			resolve();
 		}
+
+		return () => {
+			resolve();
+			object.removeEventListener('load', resolve);
+			object.removeEventListener('error', resolve);
+		};
 	}
 
 	function monitorEmbed(embed: HTMLEmbedElement) {
@@ -228,10 +274,15 @@ export function monitorDOM(
 		}
 
 		const p = createLoad();
+		const resolve = () => {
+			p.finish();
+		};
+		embed.addEventListener('load', resolve, { once: true });
 
-		embed.addEventListener('load', () => {
-			p.set(1);
-		});
+		return () => {
+			resolve();
+			embed.removeEventListener('load', resolve);
+		};
 	}
 
 	function monitorIframe(obj: HTMLIFrameElement) {
@@ -245,7 +296,6 @@ export function monitorDOM(
 		}
 
 		const p = createLoad();
-
 		const resolve = () => {
 			p.set(1);
 		};
@@ -254,5 +304,11 @@ export function monitorDOM(
 		if ((obj.contentDocument?.readyState as string) === 'complete') {
 			resolve();
 		}
+
+		return () => {
+			resolve();
+			obj.removeEventListener('load', resolve);
+			obj.removeEventListener('error', resolve);
+		};
 	}
 }

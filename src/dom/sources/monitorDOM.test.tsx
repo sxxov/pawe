@@ -27,7 +27,7 @@ describe(nameof({ monitorDOM }), (it) => {
 			await new Promise<void>((resolve) => {
 				render(
 					<img
-						src='https://picsum.photos/200/100'
+						src='https://picsum.photos/seed/1/200/100'
 						onLoad={() => {
 							setTimeout(resolve, 0);
 						}}
@@ -58,7 +58,7 @@ describe(nameof({ monitorDOM }), (it) => {
 							images.push(
 								<img
 									key={i}
-									src={`https://picsum.photos/200/10${i}`}
+									src={`https://picsum.photos/seed/2/200/10${i}`}
 									onLoad={() => {
 										setTimeout(resolve, 0);
 									}}
@@ -105,6 +105,34 @@ describe(nameof({ monitorDOM }), (it) => {
 	// 	});
 	// 	expect(loadProgress.get()).toEqual(1);
 	// });
+
+	it.sequential('should not monitor <img> after unsubscription', async () => {
+		pool.set([]);
+		expect(progress.get()).toEqual(1);
+		await new Promise<void>((resolve) => {
+			render(
+				<img
+					src='https://picsum.photos/seed/3/200/100'
+					onLoad={() => {
+						setTimeout(resolve, 0);
+					}}
+				/>,
+			);
+			setTimeout(() => {
+				expect(progress.get()).toEqual(0);
+			}, 0);
+		});
+		expect(progress.get()).toEqual(1);
+		unsubscribe();
+		await new Promise<void>((resolve) => {
+			render(<img src='https://picsum.photos/seed/4/200/100' />);
+			setTimeout(() => {
+				expect(progress.get()).toEqual(1);
+				resolve();
+			}, 0);
+		});
+		unsubscribe = monitorDOM();
+	});
 
 	// TODO: implement tests for the rest of the DOM sources
 });
