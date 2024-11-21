@@ -27,4 +27,19 @@ describe(nameof({ monitorXMLHttpRequest }), (it) => {
 		});
 		expect(progress.get()).toEqual(1);
 	});
+
+	it.sequential('should not monitor bypassed XMLHttpRequest', async () => {
+		expect(progress.get()).toEqual(1);
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', 'https://fakeresponder.com/?sleep=0', true);
+		xhr.pawe = 'bypass';
+		xhr.send();
+		await new Promise((resolve) => {
+			xhr.addEventListener('loadend', resolve, { once: true });
+			setTimeout(() => {
+				expect(progress.get()).toEqual(1);
+			}, 0);
+		});
+		expect(progress.get()).toEqual(1);
+	});
 });

@@ -193,6 +193,39 @@ const unsubscribeBar = bar.subscribe(($bar) => {
 });
 ```
 
+## Bypassing AJAX Requests
+
+If you want to bypass AJAX requests from being tracked by `pawe`, you can pass in the non-standard `pawe` property. It will be removed from the final config/instance before being sent.
+
+### `fetch`
+
+```js
+const resp = await fetch('https://example.com', {
+	pawe: 'bypass', // add this to bypass tracking
+});
+```
+
+### `XMLHttpRequest`
+
+```js
+const xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://example.com');
+xhr.pawe = 'bypass'; // add this to bypass tracking
+xhr.send();
+```
+
+### TypeScript Support
+
+Include the following in your `tsconfig.json` to get type hints for the above mentioned `pawe` property.
+
+```json
+{
+	"compilerOptions": {
+		"types": ["pawe/client"]
+	}
+}
+```
+
 ## Data Sources
 
 -   `DOM` - Track load events from DOM elements that are statically & dynamically added to the page
