@@ -135,9 +135,9 @@ export function monitorDOM(
 		}
 
 		if (img.loading === 'lazy') {
-			let p: ReturnType<typeof createLoad>;
+			let p: ReturnType<typeof createLoad> | undefined;
 			const resolve = () => {
-				p.finish();
+				p?.finish();
 				io.disconnect();
 			};
 			const io = new IntersectionObserver(([entry]) => {
@@ -148,11 +148,7 @@ export function monitorDOM(
 				if (entry.isIntersecting) {
 					if (img.complete) {
 						io.disconnect();
-					} else if (
-						// `LoadSignal` is awaitable, so ESLint gets confused
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						!p
-					) {
+					} else if (!p) {
 						p = createLoad();
 
 						img.addEventListener('load', resolve);
